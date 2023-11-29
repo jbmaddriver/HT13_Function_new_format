@@ -1,6 +1,3 @@
-# 2.  Написати юніттести для функцій. 2 функції нижче.
-
-
 class Fibonacci:
     def __init__(self):
         self.cache = [0, 1]
