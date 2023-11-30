@@ -44,9 +44,11 @@ class TestFibonacci(unittest.TestCase):
                 self.fibonacci(i) + self.fibonacci(i + 1), self.fibonacci(i + 2)
             )
 
-    def test_invalid_input(self):
+    def test_invalid_input_str(self):
         with self.assertRaises(ValueError):
             self.fibonacci("abc")
+
+    def test_invalid_input_none(self):
         with self.assertRaises(ValueError):
             self.fibonacci(None)
 

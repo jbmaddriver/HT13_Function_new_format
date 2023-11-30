@@ -42,6 +42,8 @@ class TestName(unittest.TestCase):
                 1,
                 "Doe",
             )
+
+    def test_wrong_data_type_none(self):
         with self.assertRaises(TypeError):
             formatted_name("John", None)
 
