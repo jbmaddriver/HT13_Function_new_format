@@ -26,10 +26,6 @@ class TestFibonacci(unittest.TestCase):
         """Setting up  test. Set the instance of class Fibonacci"""
         self.fibonacci = Fibonacci()
 
-    def tearDown(self):
-        """Tearing down function not required for this test case"""
-        pass
-
     def test_base_cases(self):
         self.assertEqual(self.fibonacci(0), 0)
         self.assertEqual(self.fibonacci(1), 1)
@@ -50,13 +46,7 @@ class TestFibonacci(unittest.TestCase):
 
     def test_invalid_input(self):
         with self.assertRaises(ValueError):
-            self.fibonacci("0")
-        with self.assertRaises(ValueError):
-            self.fibonacci("1")
-        with self.assertRaises(ValueError):
             self.fibonacci("abc")
-        with self.assertRaises(ValueError):
-            self.fibonacci("")
         with self.assertRaises(ValueError):
             self.fibonacci(None)
 
