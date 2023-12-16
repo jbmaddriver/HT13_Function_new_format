@@ -5,24 +5,23 @@
 
 
 class CustomMap:
-    def __init__(self, input_dict, func1, func2, iter_func=iter, next_func=next):
+    def __init__(self, input_dict, func1, func2):
         self.input_dict = input_dict
         self.func1 = func1
         self.func2 = func2
         self.index = 0
-        self.iter_func = iter_func
-        self.next_func = next_func
 
-    def iterate(self):
-        return self.iter_func(self.input_dict)
+    def __iter__(self):
+        self.iter_keys = iter(input_dict.keys())
+        return self
 
-    def get_next(self):
-        key = list(self.input_dict.keys())[self.index]
-        value = self.input_dict[key]
-        transformed_key = self.func1(key)
-        transformed_value = self.func2(value)
-        self.index += 1
-        return transformed_key, transformed_value
+    def __next__(self):
+        try:
+            key = next(self.iter_keys)
+            value = self.input_dict[key]
+            return self.func1(key), self.func2(value)
+        except StopIteration:
+            raise StopIteration
 
 
 def func1(key):
@@ -35,7 +34,5 @@ def func2(value):
 
 input_dict = {'a': 1, 'b': 2, 'c': 3}
 custom_map_iterator = CustomMap(input_dict, func1, func2)
-iter_custom_map = custom_map_iterator.iterate()
-for _ in input_dict:
-    result = custom_map_iterator.get_next()
+for result in custom_map_iterator:
     print(result)
