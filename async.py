@@ -2,6 +2,7 @@ import asyncio
 import time
 import aioping
 import httpx
+import aiohttp
 
 
 async def download_photos(num_photos, init_url):
@@ -38,8 +39,23 @@ async def factorial(n):
 async def stop_event_loop(loop, seconds):
     print(f"Stopping event loop in {seconds} seconds")
     await asyncio.sleep(seconds)
-    # loop.stop()
     print("Event loop stopped")
+
+
+async def fetch_json():
+    async with httpx.AsyncClient() as client:
+        response = await client.get('https://jsonplaceholder.typicode.com/posts/')
+        if response.status_code == 200:
+            data = response.json()
+            return data
+        else:
+            return None
+
+
+async def fetch_data(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return await response.text()
 
 
 async def main():
@@ -47,7 +63,6 @@ async def main():
     host = "www.youtube.com"
     num_pings = 5
     num_photos = 10
-    # factorial_number = 10
 
     async with httpx.AsyncClient() as client:
 
@@ -71,6 +86,21 @@ async def main():
         results = await asyncio.gather(*ping_tasks, *factorial_tasks)
         for result in results:
             print(result)
+
+        print("Start fetch json data from database")
+        data_task = [fetch_json() for _ in range(5)]
+        data = await asyncio.gather(*data_task)
+
+        if data:
+            print("Received data from the database:")
+            print(data[:2])
+        else:
+            print("Failed to fetch data from the database.")
+
+        print("Start fetch data from url")
+        url = 'http://example.com'
+        fetch_result = await fetch_data(url)
+        print(f"Response fetch data from {url}:\n {fetch_result}")
 
         await shielded_stop
 
